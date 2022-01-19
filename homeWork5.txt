@@ -1,0 +1,59 @@
+--1
+SELECT * FROM customers WHERE country NOT LIKE 'Canada';
+
+--2
+SELECT country FROM customers;
+
+--3--
+SELECT COUNT(*)FROM orderse;
+
+--4--
+SELECT MAX(total_amount)FROM orderse;
+
+--5
+SELECT SUM(id)FROM orderse;
+
+--6
+SELECT SUM(total_amount)FROM orderse WHERE orderse.order_date >= to_timestamp('Jan  1 2014 ', 'MON DD YYYY');
+
+--7
+SELECT  avg(unit_price) AS unit_price FROM orders_item;
+
+--8
+SELECT orderse.customer_id,AVG(orderse.total_amount)FROM customers,
+                                                         orderse GROUP BY customers.first_name,orderse.id;
+
+--9
+SELECT * FROM customers WHERE country IN ('Brazil','Spain');
+
+--10
+SELECT * FROM orderse WHERE order_date >= to_timestamp('Jan  1 2013 ', 'MON DD YYYY')
+                        AND total_amount <100;
+
+--11
+SELECT * FROM customers WHERE country IN('Spain','Germany','France','Italy') ORDER BY country;
+
+--12
+SELECT * FROM customers,suppliers WHERE suppliers.country = customers.country;
+
+--13
+SELECT * FROM customers WHERE first_name LIKE 'Jo%';
+
+--14
+SELECT * FROM customers WHERE first_name  LIKE '%a';
+
+--15--
+SELECT COUNT(customers.id),country FROM customers GROUP BY  country;
+
+--16
+SELECT COUNT(customers.id),country FROM customers GROUP BY  country ORDER BY COUNT(customers.id) DESC;
+
+--17
+SELECT first_name,SUM(total_amount),COUNT(quantity)FROM orderse join customers
+c ON orderse.customer_id = c.id join orders_item OI ON orderse.id = OI.order_id
+GROUP BY first_name ORDER BY SUM(total_amount);
+
+--18
+SELECT first_name,SUM(total_amount),COUNT(quantity)FROM orderse join customers
+    c ON orderse.customer_id = c.id join orders_item OI ON orderse.id = OI.order_id
+GROUP BY first_name HAVING COUNT(quantity)>20
